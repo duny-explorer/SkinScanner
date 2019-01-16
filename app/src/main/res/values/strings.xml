@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SkinScanner</string>
+    <string name="title_activity_disease">DiseaseActivity</string>
+    <string name="action_settings_1">О программе</string>
+    <string name="about_program">¯＼_(ツ)_/¯</string>
+    <string name="btnOk_dialog">OK</string>
+    <string-array name="diseases">
+        <item>Акне</item>
+        <item>Герпес</item>
+        <item>Экзема</item>
+    </string-array>
+</resources>

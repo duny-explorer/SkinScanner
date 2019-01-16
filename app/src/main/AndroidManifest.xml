@@ -13,7 +13,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="SkinScanner"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
@@ -26,9 +26,7 @@
                 android:resource="@xml/file_path" />
         </provider>
 
-        <activity
-            android:name=".MainActivity"
-            android:label="">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,7 +48,9 @@
         <activity
             android:name=".DiseaseActivity"
             android:label=""></activity>
-        <activity android:name=".ResultActivity"></activity>
+        <activity
+            android:name=".ResultActivity"
+            android:label=""></activity>
     </application>
 
 </manifest>

@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.setTitle("");
+
         ImageButton btnCamera = findViewById(R.id.btnCamera);
         ImageButton btnPicture = findViewById(R.id.btnPicture);
         ImageButton btnInfoDisease = findViewById(R.id.btnInfoDisease);

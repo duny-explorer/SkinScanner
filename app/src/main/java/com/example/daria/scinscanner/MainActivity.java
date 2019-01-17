@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent, 2);
                 break;
             case R.id.btnInfoDisease:
-                startActivity(new Intent(this, HelpActivity.class));
+                startActivity(new Intent(this, ResultActivity.class));
                 break;
         }
     }

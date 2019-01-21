@@ -3,13 +3,17 @@ package com.example.daria.scinscanner;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +27,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Uri uri;
+    protected String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCamera.setOnClickListener(this);
         btnPicture.setOnClickListener(this);
         btnInfoDisease.setOnClickListener(this);
+
+        if(Build.VERSION.SDK_INT>22) {
+            requestPermissions(new String[]{"android.permission.READ_EXTERNAL_STORAGE"}, 1);
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        try {
+            switch (requestCode) {
+                case 1: {
+                    if (!(grantResults.length > 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                        finish();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.d("1234567", "1");
+        }
     }
 
     @Override
@@ -52,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent, 2);
                 break;
             case R.id.btnInfoDisease:
-                startActivity(new Intent(this, ResultActivity.class));
+                startActivity(new Intent(this, HelpActivity.class));
                 break;
         }
     }
@@ -60,22 +87,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            Intent intent;
             String uriString = "";
             switch (requestCode) {
                 case 1:
                     uriString = uri.toString();
                     break;
                 case 2:
-                    uriString = data.getData().toString();
+                    uri = data.getData();
+                    uriString = uri.toString();
+
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    mCurrentPhotoPath = cursor.getString(columnIndex);
                     break;
                 case 3:
                     if (data.getStringExtra("btn").equals("ok")) {
-                        startActivity(new Intent(this, ResultActivity.class));
+                        intent = new Intent(this, ResultActivity.class);
+                        intent.putExtra("filepath", mCurrentPhotoPath);
+                        startActivity(intent);
                     }
             }
 
             if (requestCode == 1 || requestCode == 2) {
-                Intent intent = new Intent(this, PreviewActivity.class);
+                intent = new Intent(this, PreviewActivity.class);
                 intent.putExtra("Uri", uriString);
                 startActivityForResult(intent, 3);
             }
@@ -87,13 +124,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-
-        //String mCurrentPhotoPath = image.getAbsolutePath();
-        return File.createTempFile(
+        File image = File.createTempFile(
                 imageFileName,
                 ".jpg",
                 storageDir
         );
+
+        mCurrentPhotoPath = image.getAbsolutePath();
+
+        return image;
     }
 
     private void dispatchTakePictureIntent() {

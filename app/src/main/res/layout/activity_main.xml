@@ -100,7 +100,7 @@
         android:id="@+id/textView4"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Галлерея"
+        android:text="Галерея"
         android:textSize="24dp"
         app:fontFamily="casual"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"

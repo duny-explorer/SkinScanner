@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,18 +53,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], int[] grantResults) {
         try {
             switch (requestCode) {
                 case 1: {
-                    if (!(grantResults.length > 0
-                            && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-                        finish();
+                    if (!(grantResults.length > 0)) {
+                        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                            finish();
+                        }
                     }
                 }
             }
         } catch (Exception e) {
-            Log.d("1234567", "1");
+            Log.d("1234567", e.toString());
         }
     }
 
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     uriString = uri.toString();
 
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                    @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     mCurrentPhotoPath = cursor.getString(columnIndex);

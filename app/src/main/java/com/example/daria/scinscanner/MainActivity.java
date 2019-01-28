@@ -1,16 +1,11 @@
 package com.example.daria.scinscanner;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,10 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,49 +29,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.setTitle("");
 
-        ImageButton btnCamera = findViewById(R.id.btnCamera);
         ImageButton btnPicture = findViewById(R.id.btnPicture);
         ImageButton btnInfoDisease = findViewById(R.id.btnInfoDisease);
 
-        btnCamera.setOnClickListener(this);
         btnPicture.setOnClickListener(this);
         btnInfoDisease.setOnClickListener(this);
-
-        if(Build.VERSION.SDK_INT>22) {
-            requestPermissions(new String[]{"android.permission.READ_EXTERNAL_STORAGE"}, 1);
-
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], int[] grantResults) {
-        try {
-            switch (requestCode) {
-                case 1: {
-                    if (!(grantResults.length > 0)) {
-                        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-                            finish();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.d("1234567", e.toString());
-        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnCamera:
-                dispatchTakePictureIntent();
-                break;
             case R.id.btnPicture:
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 2);
+                CropImage.startPickImageActivity(this);
                 break;
             case R.id.btnInfoDisease:
                 startActivity(new Intent(this, HelpActivity.class));
@@ -88,72 +49,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == RESULT_OK) {
             Intent intent;
-            String uriString = "";
-            switch (requestCode) {
-                case 1:
-                    uriString = uri.toString();
-                    break;
-                case 2:
-                    uri = data.getData();
-                    uriString = uri.toString();
 
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    mCurrentPhotoPath = cursor.getString(columnIndex);
-                    break;
-                case 3:
-                    if (data.getStringExtra("btn").equals("ok")) {
-                        intent = new Intent(this, ResultActivity.class);
-                        intent.putExtra("filepath", mCurrentPhotoPath);
-                        startActivity(intent);
-                    }
-            }
+            if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE) {
+                Uri imageUri = CropImage.getPickImageResultUri(this, data);
 
-            if (requestCode == 1 || requestCode == 2) {
-                intent = new Intent(this, PreviewActivity.class);
-                intent.putExtra("Uri", uriString);
-                startActivityForResult(intent, 3);
+                if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                    uri = imageUri;
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                } else {
+                    startCropImageActivity(imageUri);
+                }
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                mCurrentPhotoPath = CropImage.getActivityResult(data).getUri().getPath();
+
+                Log.d("1234567", mCurrentPhotoPath);
+                intent = new Intent(this, ResultActivity.class);
+                intent.putExtra("filepath", mCurrentPhotoPath);
+                startActivity(intent);
             }
         }
     }
 
-    private File createImageFile() throws IOException {
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-
-        mCurrentPhotoPath = image.getAbsolutePath();
-
-        return image;
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri).start(this);
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                Toast.makeText(this, "Ошибка!", Toast.LENGTH_SHORT).show();
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                CropImage.startPickImageActivity(this);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
-            if (photoFile != null) {
-                uri = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(takePictureIntent, 1);
-
+        }
+        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
+            if (uri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCropImageActivity(uri);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
         }
     }

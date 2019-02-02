@@ -17,26 +17,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity"
+                  android:label="" />
         <activity
             android:name=".HelpActivity"
             android:label="" />
-        <activity
-            android:name=".PreviewActivity"
-            android:label="">
-            <intent-filter>
-                <action android:name="preview_foto" />
-
-                <data android:scheme="content" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".DiseaseActivity"
             android:label=""></activity>

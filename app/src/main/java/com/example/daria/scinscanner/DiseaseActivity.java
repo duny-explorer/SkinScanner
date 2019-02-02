@@ -26,6 +26,7 @@ public class DiseaseActivity extends AppCompatActivity {
         }
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 

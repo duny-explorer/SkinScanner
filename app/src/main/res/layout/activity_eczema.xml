@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView6"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Экзема"
-        android:textSize="30sp" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline11"
-        app:srcCompat="@drawable/eczema" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08023483" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Экзема"
+                android:textSize="30sp" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="379dp"
+                android:layout_height="307dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="25dp"
+                app:srcCompat="@drawable/eczema" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Экзема — острое или хроническое незаразное воспалительное заболевание кожи, характеризующееся разнообразной сыпью, чувством жжения, зудом и склонностью к рецидивам."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline13" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:text="Экзема — острое или хроническое незаразное воспалительное заболевание кожи, характеризующееся разнообразной сыпью, чувством жжения, зудом и склонностью к рецидивам." />
 
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:text="Причины:\n    нарушения в иммунной системе\n    Наследственная предрасположенность к различным аллергиям\n    Гиповитаминоз, особенно витаминов группы B\n    Дефицит ненасыщенных жирных кислот и микроэлементов\n    Болезни ЖКТ, печени, микозы\n    Холециститы (воспаления желчного пузыря)\n    Хронические заболевания, истощающие иммунитет: кариес, гайморит, тонзиллит и др.\n    Депрессии, стрессовые ситуации, нервное истощение\n    Гормональные расстройства\n    Работа на пищевых, химических и фармацевтических предприятиях, на которых экзема может развиться в качестве аллергической реакции на те или иные вещества\n   Аллергия на синтетическую одежду, бытовую химию, лекарственные препараты, пыльцу растений, домашнюю пыль, некачественные строительные материалы, используемые при строительстве жилого помещения (линолеум, мебель)\n    Гиперчувствительность к продуктам питания, особенно богатым на красители, консерванты, ароматические и другие пищевые добавки\n    Глистные инвазии\n    Долго не заживающие повреждения кожи: раны, ожоги\n     У детей, на фоне других заболеваний, например: атопического дерматита, диатеза." />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:text="Симптомы:\n     1) Bозникновение на коже ограниченного участка воспаления, для которого характерно покраснение, кожа выглядит утолщённой.\n     2) Появление сыпи, которая имеет разный вид при различных типах экзем.\n     3) Зуд кожи, причем иногда он может быть настолько сильным, что нарушает нормальный ритм жизни и сон.\n     4) Пузырьки сыпи вскрываются, образуя болезненные трещины и ранки на коже.\n     5) В период обострения может повышаться температура тела и появляться недомогание.\n     6) После стихания обострения кожа на пораженном участке становится сухой, неэластичной и трескается." />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

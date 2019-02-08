@@ -40,7 +40,7 @@ public class ResultActivity extends AppCompatActivity {
         try {
             final Gson gson = new GsonBuilder().create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://2b184369.ngrok.io")
+                    .baseUrl("http://134.0.112.232:5000") //134.0.112.232
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
@@ -59,11 +59,14 @@ public class ResultActivity extends AppCompatActivity {
                         assert data != null;
                         Log.d("1234567", data.toString());
                         switch (data.toString()) {
-                            case "1.0":
+                            case "0.0":
                                 setContentView(R.layout.result_acne);
                                 break;
-                            case "2.0":
+                            case "1.0":
                                 setContentView(R.layout.result_eczema);
+                                break;
+                            case "2.0":
+                                setContentView(R.layout.result_health);
                                 break;
                             case "3.0":
                                 setContentView(R.layout.result_herpes);

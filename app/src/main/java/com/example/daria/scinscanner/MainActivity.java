@@ -76,7 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startCropImageActivity(Uri imageUri) {
-        CropImage.activity(imageUri).start(this);
+        CropImage.activity(imageUri)
+                .setFixAspectRatio(true)
+                .setMinCropResultSize(250, 250)
+                .start(this);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {

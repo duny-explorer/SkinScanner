@@ -39,7 +39,7 @@ public class ResultActivity extends AppCompatActivity {
         try {
             final Gson gson = new GsonBuilder().create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://dunyexplorer.pythonanywhere.com") 
+                    .baseUrl("http://dunyexplorer.pythonanywhere.com")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
@@ -90,7 +90,6 @@ public class ResultActivity extends AppCompatActivity {
 
     void Error(String a) {
         Log.d("1234567", a);
-        Toast.makeText(this, "ERROR " + a, Toast.LENGTH_LONG);
     }
 
     @Override

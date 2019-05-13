@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
@@ -40,7 +39,7 @@ public class ResultActivity extends AppCompatActivity {
         try {
             final Gson gson = new GsonBuilder().create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://134.0.112.232:5000") //134.0.112.232
+                    .baseUrl("http://dunyexplorer.pythonanywhere.com") 
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 

@@ -39,7 +39,7 @@ public class ResultActivity extends AppCompatActivity {
         try {
             final Gson gson = new GsonBuilder().create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://dunyexplorer.pythonanywhere.com")
+                    .baseUrl("http://185.219.43.93:5000")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 

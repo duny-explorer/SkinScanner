@@ -2,4 +2,4 @@
 
 вот видео работы:
 
-<iframe src="https://drive.google.com/file/d/1djPEeYsx7ljz8oYHTDIA8dTAQJJneS1_/preview" width="640" height="480"></iframe>
+![gif](https://github.com/duny-explorer/SkinScanner/blob/master/1.gif)
